@@ -25,6 +25,23 @@ export class HeroService {
     );
   }
 
+  /** GET heroes from the server */
+  getHero(id: number): Observable<Hero> {
+    const url = `${this.heroesUrl}/${id}`;
+    return this.http.get<Hero>(url).pipe(
+      tap((_) => this.log('fetched heroes')),
+      catchError(this.handleError<Hero>('getHeroes'))
+    );
+  }
+
+  /** GET heroes from the server */
+  updateHero(hero: Hero): Observable<Hero> {
+    return this.http.put(this.heroesUrl, hero, this.httpOptions).pipe(
+      tap((_) => this.log(`updated hero id=${hero.id}`)),
+      catchError(this.handleError<any>('updateHero'))
+    );
+  }
+
   /**
    * Handle Http operation that failed.
    * Let the app continue.
